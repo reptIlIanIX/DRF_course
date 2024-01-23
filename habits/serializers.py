@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from habits.models import Habit
+from habits.validators import validator_for_habit
 
 
 class HabitSerializer(serializers.ModelSerializer):
