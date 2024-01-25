@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_celery_beat',
+    'celery',
     'habits',
     'drf_yasg',
     'users',
@@ -84,11 +85,11 @@ WSGI_APPLICATION = 'DRF_course.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('DATABASES_HOST'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'shelterdocker',
+        'USER': "postgres",
+        "PASSWORD": 'mysecretpassword',
+        'HOST': 'db'
     }
 }
 
@@ -156,7 +157,7 @@ TELEGRAM_BOT_API_KEY = os.getenv('TELEGRAM_BOT_API_KEY')
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 TELEGRAM_URL = os.getenv('TELEGRAM_URL')
 
-CELERY_BROKER_URL = os.getenv('CELERY')
+CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_TIMEZONE = 'Europe/Moscow'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
