@@ -3,10 +3,10 @@ import os
 from celery import Celery
 
 # Установка переменной окружения для настроек проекта
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DRF_course.settings')
 
 # Создание экземпляра объекта Celery
-app = Celery('config')
+app = Celery('DRF_course')
 
 # Загрузка настроек из файла Django
 app.config_from_object('django.conf:settings', namespace='CELERY')

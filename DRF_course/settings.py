@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_celery_beat',
     'habits',
+    'drf_yasg',
     'users',
     'django_filters',
     'rest_framework',
@@ -83,8 +84,11 @@ WSGI_APPLICATION = 'DRF_course.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('DATABASES_HOST'),
     }
 }
 
@@ -160,7 +164,7 @@ CELERY_RESULT_BACKEND = os.getenv('CELERY')
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 # CELERY_BEAT_SCHEDULE = {
 #     'TelegramBot': {
-#         'task': 'habits.tasks.send_message_to_bot',
+#         'task': 'habits.tasks.message_to_bot',
 #         'schedule': timedelta(minutes=1),
 #     },
 # }

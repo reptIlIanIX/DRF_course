@@ -13,7 +13,6 @@ from habits.tasks import telegram_id, message_to_bot
 
 
 def check_habits_daily():
-
     date_time_now = datetime.now()
     moscow_timezone = pytz.timezone('Europe/Moscow')
     date_now = date_time_now.astimezone(moscow_timezone)
@@ -27,7 +26,6 @@ def check_habits_daily():
 
 
 def check_habits_weekly():
-
     date_time_now = datetime.now()
     moscow_timezone = pytz.timezone('Europe/Moscow')
     date_now = date_time_now.astimezone(moscow_timezone)
@@ -41,7 +39,6 @@ def check_habits_weekly():
 
 
 def create_message(habit_id):
-
     habit = Habit.objects.get(id=habit_id)
 
     user = habit.user
@@ -68,31 +65,28 @@ def create_message(habit_id):
     return HttpResponse(response)
 
 
-# def create_reminder(habit):
-#
-#     crontab_schedule, _ = CrontabSchedule.objects.get_or_create(
-#         minute=habit.time.minute,
-#         hour=habit.time.hour,
-#         day_of_week='*' if habit.period == 'ежедневно' else '*/7',
-#         month_of_year='*',
-#         timezone=settings.TIME_ZONE
-#     )
-#
-#     PeriodicTask.objects.create(
-#         crontab=crontab_schedule,
-#         name=f'Habit Task - {habit.name}',
-#         task='habits.tasks.send_message_to_bot',
-#         args=[habit.id],
-#     )
+def create_reminder(habit):
+    crontab_schedule, _ = CrontabSchedule.objects.get_or_create(
+        minute=habit.time.minute,
+        hour=habit.time.hour,
+        day_of_week='*' if habit.period == 'ежедневно' else '*/7',
+        month_of_year='*',
+        timezone=settings.TIME_ZONE
+    )
+
+    PeriodicTask.objects.create(
+        crontab=crontab_schedule,
+        name=f'Habit Task - {habit.name}',
+        task='habits.tasks.message_to_bot',
+        args=[habit.id],
+    )
 
 
 def delete_reminder(habit):
-
-    task_name = f'send_message_to_bot_{habit.id}'
+    task_name = f'message_to_bot{habit.id}'
     PeriodicTask.objects.filter(name=task_name).delete()
 
 
 def update_reminder(habit):
-
     delete_reminder(habit)
-    # create_reminder(habit)
+    create_reminder(habit)
