@@ -95,4 +95,4 @@ def delete_reminder(habit):
 def update_reminder(habit):
 
     delete_reminder(habit)
-    create_reminder(habit)
+    # create_reminder(habit)
