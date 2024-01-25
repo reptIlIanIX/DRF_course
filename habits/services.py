@@ -68,22 +68,22 @@ def create_message(habit_id):
     return HttpResponse(response)
 
 
-def create_reminder(habit):
-
-    crontab_schedule, _ = CrontabSchedule.objects.get_or_create(
-        minute=habit.time.minute,
-        hour=habit.time.hour,
-        day_of_week='*' if habit.period == 'ежедневно' else '*/7',
-        month_of_year='*',
-        timezone=settings.TIME_ZONE
-    )
-
-    PeriodicTask.objects.create(
-        crontab=crontab_schedule,
-        name=f'Habit Task - {habit.name}',
-        task='habits.tasks.send_message_to_bot',
-        args=[habit.id],
-    )
+# def create_reminder(habit):
+#
+#     crontab_schedule, _ = CrontabSchedule.objects.get_or_create(
+#         minute=habit.time.minute,
+#         hour=habit.time.hour,
+#         day_of_week='*' if habit.period == 'ежедневно' else '*/7',
+#         month_of_year='*',
+#         timezone=settings.TIME_ZONE
+#     )
+#
+#     PeriodicTask.objects.create(
+#         crontab=crontab_schedule,
+#         name=f'Habit Task - {habit.name}',
+#         task='habits.tasks.send_message_to_bot',
+#         args=[habit.id],
+#     )
 
 
 def delete_reminder(habit):

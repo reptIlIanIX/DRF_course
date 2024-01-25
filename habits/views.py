@@ -5,7 +5,7 @@ from habits.models import Habit
 from habits.paginators import HabitPaginator
 from habits.permissions import IsOwner
 from habits.serializers import HabitSerializer
-from habits.services import update_reminder, delete_reminder, create_reminder
+from habits.services import update_reminder, delete_reminder
 
 
 # Create your views here.
@@ -13,15 +13,15 @@ class HabitCreateAPIView(generics.CreateAPIView):
     serializer_class = HabitSerializer
     permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
-        new_habit = serializer.save()
-        new_habit.user = self.request.user
-        create_reminder(new_habit)
-        new_habit.save()
+    # def perform_create(self, serializer):
+    #     new_habit = serializer.save()
+    #     new_habit.user = self.request.user
+    #     create_reminder(new_habit)
+    #     new_habit.save()
 
 
 class HabitListAPIView(generics.ListAPIView):
-    quaryset = Habit.objects.all()
+    queryset = Habit.objects.all()
     serializer_class = HabitSerializer
     pagination_class = HabitPaginator
     permission_classes = [IsAuthenticated, IsOwner]
@@ -31,7 +31,7 @@ class HabitListAPIView(generics.ListAPIView):
         return quaryset
 
 class HabitPublicListAPIView(generics.ListAPIView):
-    quaryset = Habit.objects.all()
+    queryset = Habit.objects.all()
     serializer_class = HabitSerializer
     pagination_class = HabitPaginator
     permission_classes = [AllowAny]
@@ -42,7 +42,7 @@ class HabitPublicListAPIView(generics.ListAPIView):
 
 class HabitRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = HabitSerializer
-    quaryset = Habit.objects.all()
+    queryset = Habit.objects.all()
     permission_classes = [IsAuthenticated, IsOwner]
 
 
