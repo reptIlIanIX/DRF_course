@@ -8,11 +8,10 @@ services:
 
   db:
     image: postgres
-    environment:
-      - POSTGRES_PASSWORD=mysecretpassword
-      - PGDATA=/var/lib/postgresql/data/pgdata
+    env_file:
+      - .env
     volumes:
-      - pg_data:/var/lib/postgresql/data/pgdata
+      - pg_data:/var/lib/postgresql/data/
     ports:
       - '5432:5432'
     healthcheck:
@@ -23,6 +22,8 @@ services:
 
   app:
     build: .
+    env_file:
+      - .env
     tty: true
     command:  bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     ports:
@@ -35,6 +36,8 @@ services:
 
   celery:
     build: .
+    env_file:
+      - .env
     tty: true
     command: celery -A DRF_course worker -l INFO
     volumes:
@@ -44,8 +47,10 @@ services:
       - app
   celery_beat:
     build: .
+    env_file:
+      - .env
     tty: true
-    command: celery -A DRF_course beat -l INFO
+    command: celery -A DRFhw_1 beat -l INFO -S django
     volumes:
       - .:/code
     depends_on:

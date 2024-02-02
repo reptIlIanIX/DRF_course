@@ -6,6 +6,7 @@
 В составе ```Docker```:
 
 ```db```\
+```redis```\
 ```app```\
 ```celery```\
 ```celery-beat```
